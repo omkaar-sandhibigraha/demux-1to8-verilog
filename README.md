@@ -73,7 +73,6 @@ The testbench verifies all eight possible select combinations for two cases.
 
 For every select combination from 000 to 111:
 
-```text
 Y = 00000000
 
 ### D = 1
@@ -113,6 +112,7 @@ demux_1to8_verilog/
     ├── truth_table.png
     ├── tcl_console.png
     └── 18 demux project presentation.pdf
+```text
 
 ## Tools Used
 
