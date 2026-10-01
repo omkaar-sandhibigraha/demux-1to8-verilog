@@ -240,10 +240,7 @@ The 1:8 demultiplexer was successfully implemented in Verilog HDL and verified t
 
 The testbench tested:
 
-- All 8 possible select combinations
-- `D = 0`
-- `D = 1`
-- Correct routing of the input to the selected output
-- All non-selected outputs remaining `0`
+- All 16 possible select combinations (8 with `D = 0` and 8 with `D = 1`)
+- Correct routing of the input to the selected output with all non-selected outputs remaining `0`
 
 The simulation results confirm the expected functionality of the 1:8 DEMUX.
