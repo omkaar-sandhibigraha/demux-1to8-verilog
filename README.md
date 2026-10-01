@@ -1,138 +1,249 @@
-# 1:8 Demultiplexer Using Verilog HDL
+# 1:8 Demultiplexer using Verilog HDL
 
 ## Project Overview
 
-This project implements and simulates a 1:8 Demultiplexer using Verilog HDL.
+This project implements and simulates a **1:8 Demultiplexer (DEMUX)** using **Verilog HDL**.
 
-A demultiplexer routes a single data input to one of multiple output lines based on the select input.
+A demultiplexer takes a single data input and routes it to one of multiple output lines based on the select inputs.
 
-For this 1:8 demultiplexer:
+For a 1:8 DEMUX:
 
-- Data input: D
-- Select input: S[2:0]
-- Output: Y[7:0]
+- **Data input:** `D`
+- **Select input:** `S[2:0]`
+- **Outputs:** `Y[7:0]`
 
-The three select bits provide 2^3 = 8 possible output selections.
+Since there are 3 select bits, $2^3 = 8$, so the input `D` can be routed to one of 8 output lines.
 
-## Inputs and Outputs
+![Block diagram of the 1:8 DEMUX](docs/block_diagram.png)
 
-| Signal | Width | Description |
-|--------|-------|-------------|
-| D | 1 bit | Data input |
-| S[2:0] | 3 bits | Select input |
-| Y[7:0] | 8 bits | Output lines |
+---
 
 ## Working Principle
 
-The select input S[2:0] determines which output receives the data input D.
+The three select inputs `S[2:0]` determine which output receives the data input.
 
-| Select | Active Output |
-|--------|---------------|
-| 000 | Y0 |
-| 001 | Y1 |
-| 010 | Y2 |
-| 011 | Y3 |
-| 100 | Y4 |
-| 101 | Y5 |
-| 110 | Y6 |
-| 111 | Y7 |
+Only one output can carry the value of `D` at a time. All other outputs remain `0`.
 
-When D = 0, all outputs are 0 regardless of the select input.
+### Select Mapping
 
-When D = 1, the output selected by S[2:0] becomes 1 while all other outputs remain 0.
+| Select `S[2:0]` | Selected Output |
+|---|---|
+| `000` | `Y[0]` |
+| `001` | `Y[1]` |
+| `010` | `Y[2]` |
+| `011` | `Y[3]` |
+| `100` | `Y[4]` |
+| `101` | `Y[5]` |
+| `110` | `Y[6]` |
+| `111` | `Y[7]` |
 
-## Boolean Equations
+---
 
+## Boolean Expressions
+
+The eight output equations are:
+
+```text
 Y0 = D · S2' · S1' · S0'
-
 Y1 = D · S2' · S1' · S0
+Y2 = D · S2' · S1  · S0'
+Y3 = D · S2' · S1  · S0
+Y4 = D · S2  · S1' · S0'
+Y5 = D · S2  · S1' · S0
+Y6 = D · S2  · S1  · S0'
+Y7 = D · S2  · S1  · S0
+```
 
-Y2 = D · S2' · S1 · S0'
+---
 
-Y3 = D · S2' · S1 · S0
+## Truth Table
 
-Y4 = D · S2 · S1' · S0'
+| D | S2 | S1 | S0 | Y7 | Y6 | Y5 | Y4 | Y3 | Y2 | Y1 | Y0 |
+|---|----|----|----|----|----|----|----|----|----|----|----|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 |
+| 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 |
+| 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 |
+| 1 | 1 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 |
+| 1 | 1 | 0 | 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 1 | 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
-Y5 = D · S2 · S1' · S0
+![Truth table](docs/truth_table.png)
 
-Y6 = D · S2 · S1 · S0'
-
-Y7 = D · S2 · S1 · S0
+---
 
 ## Verilog Implementation
 
-The demultiplexer is implemented using a combinational `always @(*)` block and a `case` statement based on the 3-bit select input S[2:0].
+The DEMUX is implemented using a combinational `always` block and a `case` statement.
 
-The outputs are first initialized to zero. The selected output is then assigned the value of D.
+```verilog
+module demux_1to8(
+    input D,
+    input [2:0] S,
+    output reg [7:0] Y
+);
+
+always @(*) begin
+    Y = 8'b00000000;
+    case (S)
+        3'b000: Y[0] = D;
+        3'b001: Y[1] = D;
+        3'b010: Y[2] = D;
+        3'b011: Y[3] = D;
+        3'b100: Y[4] = D;
+        3'b101: Y[5] = D;
+        3'b110: Y[6] = D;
+        3'b111: Y[7] = D;
+    endcase
+end
+
+endmodule
+```
+
+---
 
 ## Testbench
 
-The testbench verifies all eight possible select combinations for two cases.
+The testbench checks all 8 possible select combinations for both values of `D`.
+
+```verilog
+module demux_tb;
+
+    reg D;
+    reg [2:0] S;
+    wire [7:0] Y;
+    reg [7:0] expected;
+    integer i;
+
+    demux_1to8 dut (
+        .D(D),
+        .S(S),
+        .Y(Y)
+    );
+
+    initial begin
+        D = 0;
+        for (i = 0; i < 8; i = i + 1) begin
+            S = i;
+            expected = 8'b00000000;
+            #10;
+            if (Y == expected)
+                $display("PASS: D=%b S=%b Y=%b", D, S, Y);
+            else
+                $display("FAIL: D=%b S=%b Expected=%b Actual=%b",
+                         D, S, expected, Y);
+        end
+
+        D = 1;
+        for (i = 0; i < 8; i = i + 1) begin
+            S = i;
+            expected = 8'b00000000;
+            expected[i] = 1'b1;
+            #10;
+            if (Y == expected)
+                $display("PASS: D=%b S=%b Y=%b", D, S, Y);
+            else
+                $display("FAIL: D=%b S=%b Expected=%b Actual=%b",
+                         D, S, expected, Y);
+        end
+
+        $finish;
+    end
+
+endmodule
+```
+
+---
+
+## Simulation Verification
 
 ### D = 0
 
-For every select combination from 000 to 111:
+For every select combination from `000` to `111`:
 
+```text
 Y = 00000000
+```
 
 ### D = 1
 
-For every select combination, the corresponding output is expected to become 1.
+For every select combination, the corresponding output becomes `1`.
 
 For example:
 
+```text
 S = 011
 Y = 00001000
+```
 
-The testbench automatically generates the expected output and compares it with the actual output.
+Here, `S = 011` selects `Y[3]`, so the input `D = 1` is routed to `Y[3]`.
 
-A `PASS` message is displayed when the expected and actual outputs match. Otherwise, a `FAIL` message is displayed.
+The testbench automatically generates the expected output and compares it with the actual output. A `PASS` message is displayed when the expected and actual outputs match. Otherwise, a `FAIL` message is displayed.
 
-## Simulation Results
+### Waveform
 
-The design was verified using behavioral simulation in AMD Vivado.
+![Simulation waveform](docs/waveform.png)
 
-The waveform demonstrates that the selected output follows the input D while all other outputs remain inactive.
+### Tcl Console Output
 
-![Vivado waveform](docs/waveform.png)
+![Tcl console PASS/FAIL output](docs/tcl_console.png)
+
+---
 
 ## Project Files
 
 ```text
 demux_1to8_verilog/
-├── README.md
-├── .gitignore
+│
 ├── src/
 │   └── demux_1to8.v
+│
 ├── testbench/
 │   └── demux_tb.v
-└── docs/
-    ├── waveform.png
-    ├── block_diagram.png
-    ├── truth_table.png
-    ├── tcl_console.png
-    └── 18 demux project presentation.pdf
-```text
+│
+├── docs/
+│   ├── block_diagram.png
+│   ├── truth_table.png
+│   ├── waveform.png
+│   ├── tcl_console.png
+│   └── 18 demux project presentation.pdf
+│
+├── .gitignore
+└── README.md
+```
+
+📄 [Project presentation (PDF)](docs/18%20demux%20project%20presentation.pdf)
+
+---
 
 ## Tools Used
 
-- Verilog HDL
-- AMD Vivado
-- Vivado XSim behavioral simulation
+- **Verilog HDL** — Hardware description language
+- **Vivado** — Simulation and verification
+- **Visual Studio Code** — Source-code editing
+- **Git & GitHub** — Version control and project hosting
 
-## How to Run
+---
 
-1. Open AMD Vivado.
-2. Create a new RTL project.
-3. Add `src/demux_1to8.v` as a Design Source.
-4. Add `testbench/demux_tb.v` as a Simulation Source.
-5. Set `demux_tb` as the simulation top module.
-6. Run Behavioral Simulation.
-7. Add `D`, `S[2:0]`, and `Y[7:0]` to the waveform.
-8. Run the simulation and verify the outputs.
+## Project Outcome
 
-## Result
+The 1:8 demultiplexer was successfully implemented in Verilog HDL and verified through simulation.
 
-The 1:8 demultiplexer successfully routes the input data to the output selected by `S[2:0]`.
+The testbench tested:
 
-The testbench verifies all eight select combinations for both `D = 0` and `D = 1`.
+- All 8 possible select combinations
+- `D = 0`
+- `D = 1`
+- Correct routing of the input to the selected output
+- All non-selected outputs remaining `0`
+
+The simulation results confirm the expected functionality of the 1:8 DEMUX.
